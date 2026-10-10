@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Unblocked Vault</title>
+    <style>
+        /* Base Styling & Theme */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #030712;
+            color: #f3f4f6;
+            overflow-x: hidden;
+            position: relative;
+        }
+        /* Floating Background Particles Canvas */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            background: radial-gradient(circle, #111827 0%, #030712 100%);
+        }
+        header {
+            text-align: center;
+            padding: 50px 20px;
+            border-bottom: 2px solid #1f2937;
+            background-color: rgba(3, 7, 18, 0.85);
+            backdrop-filter: blur(8px);
+        }
+        header h1 {
+            font-size: 2.8rem;
+            color: #ffffff;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+            margin-bottom: 12px;
+            letter-spacing: 2px;
+        }
+        header p {
+            color: #9ca3af;
+            font-size: 1.2rem;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        /* Section Dividers */
+        .section-title {
+            font-size: 2rem;
+            margin: 60px 0 25px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .green-title { color: #84cc16; border-color: #3f6212; }
+        .blue-title { color: #3b82f6; border-color: #1e3a8a; }
+        .red-title { color: #ef4444; border-color: #7f1d1d; }
+
+        /* Shop Grids */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+        .card {
+            background-color: rgba(17, 24, 39, 0.6);
+            border: 1px solid #374151;
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            backdrop-filter: blur(5px);
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        /* Color Accent Classes */
+        .card.green-accent:hover { border-color: #84cc16; box-shadow: 0 0 20px rgba(132, 204, 22, 0.25); }
+        .card.blue-accent:hover { border-color: #3b82f6; box-shadow: 0 0 20px rgba(59, 130, 246, 0.25); }
+        .card.red-accent:hover { border-color: #ef4444; box-shadow: 0 0 20px rgba(239, 68, 68, 0.25); }
+
+        .card-graphic {
+            width: 100%;
+            max-height: 160px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .card h2 {
+            font-size: 1.6rem;
+            margin-bottom: 12px;
+            color: #ffffff;
+        }
+        .card p {
+            color: #9ca3af;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+        .price-tag {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin: 20px 0;
+        }
+
+        /* Protection Plan Options Panel */
+        .protection-box {
+            background-color: rgba(31, 41, 55, 0.5);
+            border: 1px solid #4b5563;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .protection-box label {
+            display: block;
+            font-size: 0.9rem;
+            color: #e5e7eb;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .protection-box select {
+            width: 100%;
+            background-color: #111827;
+            color: #ffffff;
+            border: 1px solid #4b5563;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        /* Purchase Button layout */
+        .buy-btn {
+            display: block;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 14px 20px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            cursor: pointer;
+            border: none;
+            width: 100%;
+        }
+        .green-accent .buy-btn { background-color: #65a30d; box-shadow: 0 4px 12px rgba(101, 163, 13, 0.3); }
+        .green-accent .buy-btn:hover { background-color: #84cc16; }
+        .blue-accent .buy-btn { background-color: #2563eb; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
+        .blue-accent .buy-btn:hover { background-color: #3b82f6; }
+        .red-accent .buy-btn { background-color: #dc2626; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3); }
+        .red-accent .buy-btn:hover { background-color: #ef4444; }
+        .buy-btn:active { transform: scale(0.98); }
+    </style>
+</head>
+<body>
+
+    <canvas id="particle-canvas"></canvas>
+
+    <header>
+        <h1>THE UNBLOCKED VAULT</h1>
+        <p>Premium proxy links, gaming platforms, and desktop emulations setup instantly.</p>
+    </header>
+
+    <div class="container">
+
+        <!-- ================= UNBLOCKED GAMING SITES ================= -->
+        <h2 class="section-title green-title">🎮 Unblocked Gaming Sites</h2>
+        <div class="grid">
+            <!-- Tier 1 -->
+            <div class="card green-accent" id="game-t1">
+                <div>
+                    <img src="https://githubusercontent.com" alt="1 Game Site" class="card-graphic">
+                    <h2>Starter Gaming Link</h2>
+                    <p>Get instant web access to 1 premium unblocked casual browser game site layout.</p>
+                </div>
+                <div>
+                    <div class="price-tag">$1.00</div>
+                    <div class="protection-box">
+                        <label>🔒 Anti-Block Protection Plan:</label>
+                        <select onchange="updatePrice('game-t1', 1, 1, 2, 3)">
+                            <option value="none">No Protection Plan</option>
+                            <option value="basic">Basic (1 Mo.) | +$1.00</option>
+                            <option value="premium">Premium (4 Mo.) | +$2.00</option>
+                            <option value="ultra">Ultra (1 Year) | +$3.00</option>
+                        </select>
+                    </div>
+                    <button class="buy-btn" onclick="sendOrder('Starter Gaming Link', 'game-t1')">Order via Email</button>
+                </div>
+            </div>
+            <!-- Tier 2 -->
+            <div class="card green-accent" id="game-t2">
+                <div>
+                    <img src="https://githubusercontent.com" alt="2 Game Sites" class="card-graphic">
+                    <h2>Double Arcade Pass</h2>
+                    <p>Access to 2 separate private web nodes hosting full gaming directories.</p>
+                </div>
+                <div>
+                    <div class="price-tag">$3.00</div>
+                    <div class="protection-box">
+                        <label>🔒 Anti-Block Protection Plan:</label>
+                        <select onchange="updatePrice('game-t2', 3, 2, 4, 6)">
+                            <option value="none">No Protection Plan</option>
+                            <option value="basic">Basic (1 Mo.) | +$2.00</option>
+                            <option value="premium">Premium (4 Mo.) | +$4.00</option>
+                            <option value="ultra">Ultra (1 Year) | +$6.00</option>
+                        </select>
+                    </div>
+                    <button class="buy-btn" onclick="sendOrder('Double Arcade Pass', 'game-t2')">Order via Email</button>
+                </div>
+            </div>
+            <!-- Tier 3 -->
+            <div class="card green-accent" id="game-t3">
+                <div>
+                    <img src="https://githubusercontent.com" alt="5 Game Sites" class="card-graphic">
+                    <h2>Ultimate Gaming Network</h2>
+                    <p>Massive 5-link matrix deployment protecting your web access all semester long.</p>
+                </div>
+                <div>
+                    <div class="price-tag">$5.00</div>
+                    <div class="protection-box">
+                        <label>🔒 Anti-Block Protection Plan:</label>
+                        <select onchange="updatePrice('game-t3', 5, 3, 6, 9)">
+                            <option value="none">No Protection Plan</option>
+                            <option value="basic">Basic (1 Mo.) | +$3.00</option>
+                            <option value="premium">Premium (4 Mo.) | +$6.00</option>
+                            <option value="ultra">Ultra (1 Year) | +$9.00</option>
+                        </select>
+                    </div>
+                    <button class="buy-btn" onclick="sendOrder('Ultimate Gaming Network', 'game-t3')">Order via Email</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= UNBLOCKED PROXIES ================= -->
+        <h2 class="section-title blue-title">🌐 Unblocked Proxies</h2>
+        <div class="grid">
+            <!-- Tier 1 -->
+            <div class="card blue-accent" id="proxy-t1">
+                <div>
